@@ -1,0 +1,6 @@
+<h2>New stub url</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: stub_url_path(@conn, :create) %>
+
+<%= link "Back", to: stub_url_path(@conn, :index) %>

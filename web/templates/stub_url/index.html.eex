@@ -1,0 +1,30 @@
+<h2>Listing stub urls</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Path</th>
+      <th>Response status</th>
+      <th>Response body</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for stub_url <- @stub_urls do %>
+    <tr>
+      <td><%= stub_url.path %></td>
+      <td><%= stub_url.response_status %></td>
+      <td><%= stub_url.response_body %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: stub_url_path(@conn, :show, stub_url), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: stub_url_path(@conn, :edit, stub_url), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: stub_url_path(@conn, :delete, stub_url), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New stub url", to: stub_url_path(@conn, :new) %>
