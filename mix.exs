@@ -34,6 +34,7 @@ defmodule StubOnWeb.Mixfile do
      {:mongodb_ecto, "~> 0.1"},
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
+     {:mix_test_watch, "~> 0.2", only: :dev},
      {:cowboy, "~> 1.0"}]
   end
 end
