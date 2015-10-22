@@ -1,4 +1,4 @@
-# StubOnWeb
+# StubOnWeb [![Build Status](https://travis-ci.org/endeepak/stub_on_web.svg?branch=master)](https://travis-ci.org/endeepak/stub_on_web)
 
 To start your Phoenix app:
 
