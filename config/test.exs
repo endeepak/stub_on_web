@@ -14,7 +14,5 @@ config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
 config :stub_on_web, StubOnWeb.Repo,
-  username: "stub_on_web",
-  password: "stub_on_web",
   database: "stub_on_web_test",
   hostname: "localhost"
