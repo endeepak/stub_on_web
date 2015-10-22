@@ -15,4 +15,13 @@ defmodule StubOnWeb.StubUrlTest do
     changeset = StubUrl.changeset(%StubUrl{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+
+  test "changeset is invalid if path already exists" do
+    url1_attrs = @valid_attrs |> Map.put(:path, "hello")
+    StubOnWeb.Repo.insert!(StubUrl.changeset(%StubUrl{}, url1_attrs))
+
+    assert {:error, changeset} = StubOnWeb.Repo.insert(StubUrl.changeset(%StubUrl{}, url1_attrs))
+    assert changeset.errors[:path] == "has already been taken"
+  end
 end
