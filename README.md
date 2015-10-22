@@ -1,5 +1,9 @@
 # StubOnWeb [![Build Status](https://travis-ci.org/endeepak/stub_on_web.svg?branch=master)](https://travis-ci.org/endeepak/stub_on_web)
 
+Create stub urls with stubbed response
+
+## Running
+
 To start your Phoenix app:
 
   1. Install dependencies with `mix deps.get`
