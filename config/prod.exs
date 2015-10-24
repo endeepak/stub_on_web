@@ -17,13 +17,14 @@ config :stub_on_web, StubOnWeb.Endpoint,
   cache_static_manifest: "priv/static/manifest.json",
   secret_key_base: System.get_env("SECRET_KEY_BASE")
 
+{database_port, _} = Integer.parse(System.get_env("DATABASE_PORT") || "27017")
+
 config :stub_on_web, StubOnWeb.Repo,
   username: System.get_env("DATABASE_USER_NAME"),
   password: System.get_env("DATABASE_PASSWORD"),
   database: System.get_env("DATABASE_NAME"),
   hostname: System.get_env("DATABASE_HOST"),
-  port: System.get_env("DATABASE_PORT")
-
+  port: database_port
 
 # Do not print debug messages in production
 config :logger, level: :info
