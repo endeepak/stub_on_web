@@ -28,12 +28,13 @@ defmodule StubOnWeb.StubUrlController do
     end
   end
 
-  def get_stub_url!(path) do
-    Repo.one!(from s in StubUrl, where: s.path == ^path)
+  def get_stub_url!(path_fragments) do
+    path = path_fragments |> Enum.join("/")
+    Repo.one!(from s in StubUrl, where: s.path == ^path or s.path == ^(path <> "/"))
   end
 
-  def show(conn, %{"path" => path}) do
-    stub_url = get_stub_url!(path)
+  def show(conn, %{"path_fragments" => path_fragments}) do
+    stub_url = get_stub_url!(path_fragments)
     response_headers = stub_url.response_headers || []
     conn = Enum.reduce(response_headers, conn, fn(header, conn) -> 
       put_resp_header(conn, String.downcase(header.name), header.value) 
@@ -42,8 +43,8 @@ defmodule StubOnWeb.StubUrlController do
     send_resp(conn, stub_url.response_status, stub_url.response_body || "")
   end
 
-  def edit(conn, %{"path" => path}) do
-    stub_url = get_stub_url!(path)
+  def edit(conn, %{"path_fragments" => path_fragments}) do
+    stub_url = get_stub_url!(path_fragments)
     changeset = StubUrl.changeset(stub_url)
     render(conn, "edit.html", stub_url: stub_url, changeset: changeset)
   end

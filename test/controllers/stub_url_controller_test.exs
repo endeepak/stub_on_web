@@ -37,14 +37,23 @@ defmodule StubOnWeb.StubUrlControllerTest do
     attrs = %{path: "hello_world", response_status: 201, response_body: "Hello world!"}
     stub_url = Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
     
-    conn = get conn, stub_url_path(conn, :show, "hello_world")
+    conn = get conn, stub_url_path(conn, :show, ["hello_world"])
+    
+    assert response(conn, 201) == "Hello world!"
+  end
+
+  test "GET stub_url_path works for nested routes", %{conn: conn} do
+    attrs = %{path: "a/b/", response_status: 201, response_body: "Hello world!"}
+    stub_url = Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
+    
+    conn = get conn, stub_url_path(conn, :show, ["a", "b"])
     
     assert response(conn, 201) == "Hello world!"
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
     assert_raise Ecto.NoResultsError, fn ->
-      get conn, stub_url_path(conn, :show, "nonexistent_path")
+      get conn, stub_url_path(conn, :show, ["nonexistent_path"])
     end
   end
 
@@ -52,9 +61,18 @@ defmodule StubOnWeb.StubUrlControllerTest do
     attrs = %{path: "hello_world", response_status: 201, response_body: "Hello world!"}
     stub_url = Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
 
-    conn = get conn, stub_url_path(conn, :edit, "hello_world")
+    conn = get conn, stub_url_path(conn, :edit, ["hello_world"])
 
-    assert html_response(conn, 200) =~ "Hello world!"
+    assert html_response(conn, 200) =~ "Edit"
+  end
+
+  test "renders form for editing url with nested route", %{conn: conn} do
+    attrs = %{path: "a/b", response_status: 201, response_body: "Hello world!"}
+    stub_url = Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
+
+    conn = get conn, stub_url_path(conn, :edit, ["a", "b"])
+
+    assert html_response(conn, 200) =~ "Edit"
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do

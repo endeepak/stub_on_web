@@ -36,4 +36,9 @@ defmodule StubOnWeb.StubUrl do
     |> cast(params, @required_fields, @optional_fields)
     |> unique_constraint(:path)
   end
+
+  def path_fragments(model) do
+    model.path 
+    |> String.split("/")
+  end
 end

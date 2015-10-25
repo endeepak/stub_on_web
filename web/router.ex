@@ -18,19 +18,19 @@ defmodule StubOnWeb.Router do
 
     get "/", StubUrlController, :new
     resources "/stub_urls", StubUrlController, only: [:new, :create, :update]
-    get "/:path/edit", StubUrlController, :edit
+    get "/edit/*path_fragments", StubUrlController, :edit
   end
 
 
   scope "/", StubOnWeb do
     # TODO: Figure out one liner to add below routes
-    get "/:path", StubUrlController, :show
-    post "/:path", StubUrlController, :show
-    put "/:path", StubUrlController, :show
-    delete "/:path", StubUrlController, :show
-    head "/:path", StubUrlController, :show
-    patch "/:path", StubUrlController, :show
-    options "/:path", StubUrlController, :show
+    get "/*path_fragments", StubUrlController, :show
+    post "/*path_fragments", StubUrlController, :show
+    put "/*path_fragments", StubUrlController, :show
+    delete "/*path_fragments", StubUrlController, :show
+    head "/*path_fragments", StubUrlController, :show
+    patch "/*path_fragments", StubUrlController, :show
+    options "/*path_fragments", StubUrlController, :show
   end
 
   # Other scopes may use custom stacks.

@@ -2,14 +2,14 @@
 	<div class="alert alert-info" role="alert">
 		<p>
 			Access the url:  
-			<a href="<%= stub_url_url(@conn, :show, @stub_url.path) %>">
-				<%= stub_url_url(@conn, :show, @stub_url.path) %>
+			<a href="<%= get_stub_url_url(@conn, :show, @stub_url) %>">
+				<%= get_stub_url_url(@conn, :show, @stub_url) %>
 			</a> 
 		</p>
 		<p>
 		Edit the url: 
-			<a href="<%= stub_url_url(@conn, :edit, @stub_url.path) %>">
-				<%= stub_url_url(@conn, :edit, @stub_url.path) %>
+			<a href="<%= get_stub_url_url(@conn, :edit, @stub_url) %>">
+				<%= get_stub_url_url(@conn, :edit, @stub_url) %>
 			</a> 
 		</p>
 	</div>
