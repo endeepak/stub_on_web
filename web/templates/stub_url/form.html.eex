@@ -19,7 +19,7 @@
 
   <div class="form-group">
     <%= label f, :response_status, "Response status", class: "control-label" %>
-    <%= number_input f, :response_status, class: "form-control", required: "required" %>
+    <%= number_input f, :response_status, class: "form-control", requiredd: "required" %>
   </div>
 
   <div class="form-group">

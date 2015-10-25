@@ -21,7 +21,9 @@ defmodule StubOnWeb.StubUrlController do
         |> put_flash(:previous_stub_url, stub_url)
         |> redirect(to: stub_url_path(conn, :new))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        conn 
+        |> put_status(422)
+        |> render("new.html", changeset: changeset, previous_stub_url: nil)
     end
   end
 
@@ -50,7 +52,9 @@ defmodule StubOnWeb.StubUrlController do
         |> put_flash(:previous_stub_url, stub_url)
         |> redirect(to: stub_url_path(conn, :new))
       {:error, changeset} ->
-        render(conn, "edit.html", stub_url: stub_url, changeset: changeset)
+        conn 
+        |> put_status(422)
+        |> render("edit.html", stub_url: stub_url, changeset: changeset)
     end
   end
 end
