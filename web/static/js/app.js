@@ -11,7 +11,7 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "deps/phoenix_html/web/static/js/phoenix_html"
+// import "deps/phoenix_html/web/static/js/phoenix_html"
 
 // Import local files
 //
@@ -19,3 +19,18 @@ import "deps/phoenix_html/web/static/js/phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+
+$('body').on('click', '.add-response-header', function() {
+	var responseHeader = $('#response-header-template').html().replace(/\$index/g, $('.response-header').length)
+	$('#response-headers').append(responseHeader);
+});
+
+$('body').on('click', '.remove-trigger', function() {
+	$(this).closest('.removable').remove();
+});
+
+$(function() {
+	// Remove hidden ids to ensure deletes work fine by removing DOM
+	$('#response-headers input[type=hidden]').remove();
+});

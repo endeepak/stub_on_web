@@ -15,17 +15,29 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/">StubOnWeb</a>
+          <a class="navbar-brand" href="/">StubOnWeb (Alpha)</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="<%= stub_url_url(@conn, :new) %>">Add New</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://github.com/endeepak/stub_on_web">Github</a></li>
+          </ul>
         </div>
       </div>
     </nav>      
-    <div class="container" role="main">
+    <div id="main-content" class="container" role="main">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
       <%= @inner %>
 
     </div> <!-- /container -->
+    <footer class="footer">
+      Created by <a href="https://github.com/endeepak" target="_blank">endeepak</a>
+    </footer>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

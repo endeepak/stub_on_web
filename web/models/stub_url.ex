@@ -1,3 +1,20 @@
+defmodule StubOnWeb.HttpHeader do
+  use StubOnWeb.Web, :model
+
+  embedded_schema do
+    field :name, :string
+    field :value, :string
+  end
+
+  @required_fields ~w(name value)
+  @optional_fields ~w()
+
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+  end
+end
+
 defmodule StubOnWeb.StubUrl do
   use StubOnWeb.Web, :model
 
@@ -7,18 +24,13 @@ defmodule StubOnWeb.StubUrl do
     field :path, :string
     field :response_status, :integer
     field :response_body, :string
+    embeds_many :response_headers, StubOnWeb.HttpHeader, on_replace: :delete
     timestamps
   end
 
-  @required_fields ~w(path response_status)
+  @required_fields ~w(path response_status response_headers)
   @optional_fields ~w(response_body)
 
-  @doc """
-  Creates a changeset based on the `model` and `params`.
-
-  If no params are provided, an invalid changeset is returned
-  with no validation performed.
-  """
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)

@@ -1,3 +1,5 @@
+<h3>Edit url</h3>
+
 <%= render "form.html", changeset: @changeset, conn: @conn,
-						action_label: "Update URL",
+						action_label: "Update",
                         action: stub_url_path(@conn, :update, @stub_url) %>

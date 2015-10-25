@@ -27,3 +27,31 @@ form.link, form.button {
 h3 {
 	margin-bottom: 30px;
 }
+
+
+html, body {
+	height: 100%;
+}
+
+#main-content {
+	min-height: 100%;
+}
+
+footer {
+    background: #313742;
+    color: #7d7d7d;
+    text-align: center;
+    padding: 10px;
+}
+
+footer a, footer a:hover, footer a:focus {
+  color: #C6C6C6;
+}
+
+#response-headers {
+	padding: 0;
+}
+
+li.response-header {
+	list-style: none;
+}

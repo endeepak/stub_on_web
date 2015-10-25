@@ -14,7 +14,7 @@ defmodule StubOnWeb.StubUrlControllerTest do
   test "GET /" do
     conn = get conn(), "/"
 
-    assert html_response(conn, 200) =~ "Create new url"
+    assert html_response(conn, 200) =~ "Add"
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
@@ -27,7 +27,7 @@ defmodule StubOnWeb.StubUrlControllerTest do
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn = post conn, stub_url_path(conn, :create), stub_url: @invalid_attrs
 
-    assert html_response(conn, 422) =~ "Create new url"
+    assert html_response(conn, 422) =~ "Add"
   end
 
   test "GET stub_url_path returns stub response status and body", %{conn: conn} do
@@ -68,6 +68,6 @@ defmodule StubOnWeb.StubUrlControllerTest do
 
     conn = put conn, stub_url_path(conn, :update, stub_url), stub_url: @invalid_attrs
 
-    assert html_response(conn, 422) =~ "Update URL"
+    assert html_response(conn, 422) =~ "Edit"
   end
 end

@@ -2,6 +2,7 @@ defmodule StubOnWeb.StubUrlController do
   use StubOnWeb.Web, :controller
 
   alias StubOnWeb.StubUrl
+  alias StubOnWeb.HttpHeader
 
   plug :scrub_params, "stub_url" when action in [:create, :update]
 
@@ -33,6 +34,11 @@ defmodule StubOnWeb.StubUrlController do
 
   def show(conn, %{"path" => path}) do
     stub_url = get_stub_url!(path)
+    response_headers = stub_url.response_headers || []
+    conn = Enum.reduce(response_headers, conn, fn(header, conn) -> 
+      put_resp_header(conn, String.downcase(header.name), header.value) 
+    end)
+
     send_resp(conn, stub_url.response_status, stub_url.response_body || "")
   end
 
@@ -44,6 +50,7 @@ defmodule StubOnWeb.StubUrlController do
 
   def update(conn, %{"id" => id, "stub_url" => stub_url_params}) do
     stub_url = Repo.get!(StubUrl, id)
+    stub_url_params = Map.put(stub_url_params, "response_headers", stub_url_params['response_headers'] || [])
     changeset = StubUrl.changeset(stub_url, stub_url_params)
 
     case Repo.update(changeset) do
