@@ -50,7 +50,7 @@ defmodule StubOnWeb.StubUrlController do
 
   def update(conn, %{"id" => id, "stub_url" => stub_url_params}) do
     stub_url = Repo.get!(StubUrl, id)
-    stub_url_params = Map.put(stub_url_params, "response_headers", stub_url_params['response_headers'] || [])
+    stub_url_params = Map.put(stub_url_params, "response_headers", stub_url_params["response_headers"] || [])
     changeset = StubUrl.changeset(stub_url, stub_url_params)
 
     case Repo.update(changeset) do

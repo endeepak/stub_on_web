@@ -2,6 +2,8 @@ defmodule StubOnWeb.StubUrlControllerTest do
   use StubOnWeb.ConnCase
 
   alias StubOnWeb.StubUrl
+  alias StubOnWeb.HttpHeader
+
   @valid_attrs %{path: "hello_world", response_status: 200, response_body: "Hello world!"}
   @invalid_attrs %{}
 
@@ -13,6 +15,7 @@ defmodule StubOnWeb.StubUrlControllerTest do
 
   test "GET /" do
     conn = get conn(), "/"
+
 
     assert html_response(conn, 200) =~ "Add"
   end
@@ -61,6 +64,27 @@ defmodule StubOnWeb.StubUrlControllerTest do
 
     assert redirected_to(conn) == stub_url_path(conn, :new)
     assert Repo.get_by(StubUrl, @valid_attrs)
+  end
+
+  test "update removes response headers from stub url when response headers are not passed in params", %{conn: conn} do
+    attrs = @valid_attrs |> Map.put(:response_headers, [ %{name: "x-h1", value: "v1"}])
+    stub_url = StubOnWeb.Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
+    assert length(stub_url.response_headers) == 1
+    attrs_without_response_headers = @valid_attrs |> Map.delete(:response_headers)
+
+    conn = put conn, stub_url_path(conn, :update, stub_url), stub_url: attrs_without_response_headers 
+
+    assert length(Repo.get(StubUrl, stub_url.id).response_headers) == 0
+  end
+
+  test "update retains response headers in stub url when response headers are passed in params", %{conn: conn} do
+    attrs = @valid_attrs |> Map.put(:response_headers, [ %{name: "x-h1", value: "v1"}])
+    stub_url = StubOnWeb.Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
+    assert length(stub_url.response_headers) == 1
+
+    conn = put conn, stub_url_path(conn, :update, stub_url), stub_url: attrs 
+
+    assert length(Repo.get(StubUrl, stub_url.id).response_headers) == 1
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
