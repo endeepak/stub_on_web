@@ -10,8 +10,8 @@ defmodule StubOnWeb.StubUrl do
     timestamps
   end
 
-  @required_fields ~w(path response_status response_body)
-  @optional_fields ~w()
+  @required_fields ~w(path response_status)
+  @optional_fields ~w(response_body)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

@@ -11,21 +11,23 @@
   <% end %>
 
   <div class="form-group">
-    <%= label f, :path, "Path", class: "control-label" %>
-    <%= text_input f, :path, class: "form-control" %>
+    <div class="input-group">
+      <div class="input-group-addon"><%= url(@conn) %>/</div>
+      <%= text_input f, :path, class: "form-control", required: "required" %>
+    </div>
   </div>
 
   <div class="form-group">
     <%= label f, :response_status, "Response status", class: "control-label" %>
-    <%= number_input f, :response_status, class: "form-control" %>
+    <%= number_input f, :response_status, class: "form-control", required: "required" %>
   </div>
 
   <div class="form-group">
     <%= label f, :response_body, "Response body", class: "control-label" %>
-    <%= textarea f, :response_body, class: "form-control" %>
+    <%= textarea f, :response_body, class: "form-control", rows: 5 %>
   </div>
 
   <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
+    <%= submit @action_label, class: "btn btn-primary" %>
   </div>
 <% end %>

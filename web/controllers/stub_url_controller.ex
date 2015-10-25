@@ -5,36 +5,37 @@ defmodule StubOnWeb.StubUrlController do
 
   plug :scrub_params, "stub_url" when action in [:create, :update]
 
-  def index(conn, _params) do
-    stub_urls = Repo.all(StubUrl)
-    render(conn, "index.html", stub_urls: stub_urls)
-  end
-
   def new(conn, _params) do
-    changeset = StubUrl.changeset(%StubUrl{})
-    render(conn, "new.html", changeset: changeset)
+    random_path = Ecto.UUID.generate |> String.split("-") |> List.last
+    default_attrs = %{path: random_path, response_status: 200}
+    changeset = StubUrl.changeset(%StubUrl{}, default_attrs)
+    render(conn, "new.html", changeset: changeset, previous_stub_url: get_flash(conn, :previous_stub_url))
   end
 
   def create(conn, %{"stub_url" => stub_url_params}) do
     changeset = StubUrl.changeset(%StubUrl{}, stub_url_params)
 
     case Repo.insert(changeset) do
-      {:ok, _stub_url} ->
+      {:ok, stub_url} ->
         conn
-        |> put_flash(:info, "Stub url created successfully.")
-        |> redirect(to: stub_url_path(conn, :index))
+        |> put_flash(:previous_stub_url, stub_url)
+        |> redirect(to: stub_url_path(conn, :new))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    stub_url = Repo.get!(StubUrl, id)
-    send_resp(conn, stub_url.response_status, stub_url.response_body)
+  def get_stub_url!(path) do
+    Repo.one!(from s in StubUrl, where: s.path == ^path)
   end
 
-  def edit(conn, %{"id" => id}) do
-    stub_url = Repo.get!(StubUrl, id)
+  def show(conn, %{"path" => path}) do
+    stub_url = get_stub_url!(path)
+    send_resp(conn, stub_url.response_status, stub_url.response_body || "")
+  end
+
+  def edit(conn, %{"path" => path}) do
+    stub_url = get_stub_url!(path)
     changeset = StubUrl.changeset(stub_url)
     render(conn, "edit.html", stub_url: stub_url, changeset: changeset)
   end
@@ -46,22 +47,10 @@ defmodule StubOnWeb.StubUrlController do
     case Repo.update(changeset) do
       {:ok, stub_url} ->
         conn
-        |> put_flash(:info, "Stub url updated successfully.")
-        |> redirect(to: stub_url_path(conn, :show, stub_url))
+        |> put_flash(:previous_stub_url, stub_url)
+        |> redirect(to: stub_url_path(conn, :new))
       {:error, changeset} ->
         render(conn, "edit.html", stub_url: stub_url, changeset: changeset)
     end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    stub_url = Repo.get!(StubUrl, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(stub_url)
-
-    conn
-    |> put_flash(:info, "Stub url deleted successfully.")
-    |> redirect(to: stub_url_path(conn, :index))
   end
 end
