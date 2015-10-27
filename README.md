@@ -32,11 +32,14 @@ If you can code, fork the repo and raise a pull request
 
 ## Why yet another stub?
 
-The existing free web solutions suffer from some of the problems listed below
+The existing web solutions suffer from some of the problems listed below
 
 * Doesn't allow to choose your own path for url so it is easy to remember
 * Doesn't allow to edit the response. Only way to test multiple scenarios is to create new url and update your app config and restart your services. Oh too much work!
-* I was learning [elixir](http://elixir-lang.org/). This was simple enough and fun to try out!
+* Change requests take longer time 
+* UI cluttered with commercial aspect
+
+And I was learning [elixir](http://elixir-lang.org/). This was simple enough and fun to try out!
 
 ## Thanks to 
 
