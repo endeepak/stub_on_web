@@ -22,7 +22,7 @@
             <li><a href="<%= stub_url_url(@conn, :new) %>">Add New</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/endeepak/stub_on_web">Github</a></li>
+            <li><a target="_new" href="https://github.com/endeepak/stub_on_web">Github</a></li>
           </ul>
         </div>
       </div>
