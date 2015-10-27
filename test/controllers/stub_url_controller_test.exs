@@ -13,17 +13,23 @@ defmodule StubOnWeb.StubUrlControllerTest do
   end
 
 
-  test "GET /" do
+  test "GET / takes to add new url page" do
     conn = get conn(), "/"
 
-
     assert html_response(conn, 200) =~ "Add"
+  end
+
+  test "GET / with previous_path shows access info" do
+    conn = get conn, stub_url_path(conn, :new, previous_path: "a/b/c")
+
+    assert html_response(conn, 200) =~ stub_url_path(conn, :show, ["a", "b", "c"])
+    assert html_response(conn, 200) =~ stub_url_path(conn, :edit, ["a", "b", "c"])
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = post conn, stub_url_path(conn, :create), stub_url: @valid_attrs
 
-    assert redirected_to(conn) == stub_url_path(conn, :new)
+    assert redirected_to(conn) == stub_url_path(conn, :new, previous_path: @valid_attrs[:path])
     assert Repo.get_by(StubUrl, @valid_attrs)
   end
 
@@ -80,7 +86,7 @@ defmodule StubOnWeb.StubUrlControllerTest do
 
     conn = put conn, stub_url_path(conn, :update, stub_url), stub_url: @valid_attrs
 
-    assert redirected_to(conn) == stub_url_path(conn, :new)
+    assert redirected_to(conn) == stub_url_path(conn, :new, previous_path: @valid_attrs[:path])
     assert Repo.get_by(StubUrl, @valid_attrs)
   end
 

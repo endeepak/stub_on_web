@@ -6,11 +6,12 @@ defmodule StubOnWeb.StubUrlController do
 
   plug :scrub_params, "stub_url" when action in [:create, :update]
 
-  def new(conn, _params) do
+  def new(conn, params) do
     random_path = Ecto.UUID.generate |> String.split("-") |> List.last
     default_attrs = %{path: random_path, response_status: 200}
     changeset = StubUrl.changeset(%StubUrl{}, default_attrs)
-    render(conn, "new.html", changeset: changeset, previous_stub_url: get_flash(conn, :previous_stub_url))
+    previous_stub_url = if params["previous_path"], do: %StubUrl{path: params["previous_path"]}, else: nil
+    render(conn, "new.html", changeset: changeset, previous_stub_url: previous_stub_url)
   end
 
   def create(conn, %{"stub_url" => stub_url_params}) do
@@ -19,8 +20,7 @@ defmodule StubOnWeb.StubUrlController do
     case Repo.insert(changeset) do
       {:ok, stub_url} ->
         conn
-        |> put_flash(:previous_stub_url, stub_url)
-        |> redirect(to: stub_url_path(conn, :new))
+        |> redirect(to: stub_url_path(conn, :new, previous_path: stub_url.path))
       {:error, changeset} ->
         conn 
         |> put_status(422)
@@ -57,8 +57,7 @@ defmodule StubOnWeb.StubUrlController do
     case Repo.update(changeset) do
       {:ok, stub_url} ->
         conn
-        |> put_flash(:previous_stub_url, stub_url)
-        |> redirect(to: stub_url_path(conn, :new))
+        |> redirect(to: stub_url_path(conn, :new, previous_path: stub_url.path))
       {:error, changeset} ->
         conn 
         |> put_status(422)
