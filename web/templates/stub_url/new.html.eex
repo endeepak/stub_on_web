@@ -1,4 +1,4 @@
-<%= render "access_info.html", conn: @conn,
+<%= render "_access_info.html", conn: @conn,
 							   stub_url: @previous_stub_url %>
 
 <h3>New url</h3>

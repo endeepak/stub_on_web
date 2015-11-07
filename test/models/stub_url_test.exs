@@ -32,9 +32,7 @@ defmodule StubOnWeb.StubUrlTest do
     updates_headers = [%{name: "x-h1", value: "v1"}]
     updated_attrs = @valid_attrs |> Map.put(:response_headers, updates_headers)
 
-    changeset = StubUrl.changeset(stub_url, updated_attrs)
-
-    assert {:ok, changeset} = StubOnWeb.Repo.update(StubUrl.changeset(stub_url, updated_attrs))
+    assert {:ok, _} = StubOnWeb.Repo.update(StubUrl.changeset(stub_url, updated_attrs))
     assert length(StubOnWeb.Repo.get!(StubUrl, stub_url.id).response_headers) == 1
   end
 end

@@ -55,3 +55,11 @@ footer a, footer a:hover, footer a:focus {
 li.response-header {
 	list-style: none;
 }
+
+.panel-heading .response-status {
+	float: right;
+}
+
+.header-name {
+	min-width: 200px;
+}

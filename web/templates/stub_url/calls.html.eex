@@ -1,0 +1,39 @@
+<ol class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+<%= for call <- @stub_url.calls do %>
+  <li class="panel panel-default">
+    <div class="panel-heading" role="tab" id="call-<%= call.id %>-heading">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#call-<%= call.id %>" aria-expanded="true" aria-controls="collapseOne">
+			<span data-time="<%= call.inserted_at |> Ecto.DateTime.to_iso8601 %>"><%= call.inserted_at |> Ecto.DateTime.to_iso8601%></span> | 
+			<span> <%= call.request.method %>  <%= call.request.url %></span>
+			<span class="response-status"><%= call.response.status %></span>
+        </a>
+      </h4>
+    </div>
+    <div id="call-<%= call.id %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="call-<%= call.id %>-heading">
+      <div class="panel-body">
+		  <ul class="nav nav-tabs" role="tablist">
+		    <li role="presentation" class="active">
+		    	<a href="#call-<%= call.id %>-request" aria-controls="call-<%= call.id %>-request" role="tab" data-toggle="tab">Request</a>
+		    </li>
+		    <li role="presentation">
+		    	<a href="#call-<%= call.id %>-response" aria-controls="call-<%= call.id %>-response" role="tab" data-toggle="tab">Response</a>
+		    </li>
+		  </ul>
+
+		  <div class="tab-content">
+		    <div role="tabpanel" class="tab-pane active" id="call-<%= call.id %>-request">
+				<%= render "_http_body.html", body: call.request.body %>
+				<%= render "_http_headers.html", headers: call.request.headers %>
+		    </div>
+		    <div role="tabpanel" class="tab-pane" id="call-<%= call.id %>-response">
+				<h6>Status: <%= call.response.status %></h6>
+				<%= render "_http_body.html", body: call.response.body %>
+				<%= render "_http_headers.html", headers: call.response.headers %>
+		    </div>
+		  </div>
+      </div>
+    </div>
+  </li>
+<%= end %>	
+</ol>

@@ -19,6 +19,7 @@ defmodule StubOnWeb.Router do
     get "/", StubUrlController, :new
     resources "/stub_urls", StubUrlController, only: [:new, :create, :update]
     get "/edit/*path_fragments", StubUrlController, :edit
+    get "/calls/*path_fragments", StubUrlController, :show_calls
   end
 
 

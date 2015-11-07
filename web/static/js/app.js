@@ -33,4 +33,9 @@ $('body').on('click', '.remove-trigger', function() {
 $(function() {
 	// Remove hidden ids to ensure deletes work fine by removing DOM
 	$('#response-headers input[type=hidden]').remove();
+
+	$('span[data-time]').each(function() {
+		var localDateString = moment($(this).data('time')).format('YYYY-MM-DD HH:mm:ss');
+		$(this).html(localDateString);
+	});
 });

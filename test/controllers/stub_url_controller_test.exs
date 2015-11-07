@@ -2,7 +2,6 @@ defmodule StubOnWeb.StubUrlControllerTest do
   use StubOnWeb.ConnCase
 
   alias StubOnWeb.StubUrl
-  alias StubOnWeb.HttpHeader
 
   @valid_attrs %{path: "hello_world", response_status: 200, response_body: "Hello world!"}
   @invalid_attrs %{}
@@ -41,7 +40,7 @@ defmodule StubOnWeb.StubUrlControllerTest do
 
   test "GET stub_url_path returns stub response status and body", %{conn: conn} do
     attrs = %{path: "hello_world", response_status: 201, response_body: "Hello world!"}
-    stub_url = Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
+    Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
     
     conn = get conn, stub_url_path(conn, :show, ["hello_world"])
     
@@ -50,7 +49,7 @@ defmodule StubOnWeb.StubUrlControllerTest do
 
   test "GET stub_url_path works for nested routes", %{conn: conn} do
     attrs = %{path: "a/b/", response_status: 201, response_body: "Hello world!"}
-    stub_url = Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
+     Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
     
     conn = get conn, stub_url_path(conn, :show, ["a", "b"])
     
@@ -65,7 +64,7 @@ defmodule StubOnWeb.StubUrlControllerTest do
 
   test "renders form for editing chosen resource", %{conn: conn} do
     attrs = %{path: "hello_world", response_status: 201, response_body: "Hello world!"}
-    stub_url = Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
+    Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
 
     conn = get conn, stub_url_path(conn, :edit, ["hello_world"])
 
@@ -74,7 +73,7 @@ defmodule StubOnWeb.StubUrlControllerTest do
 
   test "renders form for editing url with nested route", %{conn: conn} do
     attrs = %{path: "a/b", response_status: 201, response_body: "Hello world!"}
-    stub_url = Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
+    Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
 
     conn = get conn, stub_url_path(conn, :edit, ["a", "b"])
 
@@ -96,7 +95,7 @@ defmodule StubOnWeb.StubUrlControllerTest do
     assert length(stub_url.response_headers) == 1
     attrs_without_response_headers = @valid_attrs |> Map.delete(:response_headers)
 
-    conn = put conn, stub_url_path(conn, :update, stub_url), stub_url: attrs_without_response_headers 
+    put conn, stub_url_path(conn, :update, stub_url), stub_url: attrs_without_response_headers 
 
     assert length(Repo.get(StubUrl, stub_url.id).response_headers) == 0
   end
@@ -106,7 +105,7 @@ defmodule StubOnWeb.StubUrlControllerTest do
     stub_url = StubOnWeb.Repo.insert!(StubUrl.changeset(%StubUrl{}, attrs))
     assert length(stub_url.response_headers) == 1
 
-    conn = put conn, stub_url_path(conn, :update, stub_url), stub_url: attrs 
+    put conn, stub_url_path(conn, :update, stub_url), stub_url: attrs 
 
     assert length(Repo.get(StubUrl, stub_url.id).response_headers) == 1
   end

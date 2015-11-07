@@ -1,0 +1,4 @@
+<%= if(@body != nil and @body != "") do %>
+	<h6>Body</h6>
+	<pre><%= @body %></pre>
+<%= end %>

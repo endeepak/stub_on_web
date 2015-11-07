@@ -2,7 +2,7 @@ defmodule StubOnWeb.StubUrlController do
   use StubOnWeb.Web, :controller
 
   alias StubOnWeb.StubUrl
-  alias StubOnWeb.HttpHeader
+  alias StubOnWeb.StubUrlCall
 
   plug :scrub_params, "stub_url" when action in [:create, :update]
 
@@ -39,8 +39,28 @@ defmodule StubOnWeb.StubUrlController do
     conn = Enum.reduce(response_headers, conn, fn(header, conn) -> 
       put_resp_header(conn, String.downcase(header.name), header.value) 
     end)
-
+    _capture_call(conn, stub_url)
     send_resp(conn, stub_url.response_status, stub_url.response_body || "")
+  end
+
+  def _capture_call(conn, stub_url) do
+    request_headers = Enum.map(conn.req_headers, fn {name, value} -> %{name: name, value: value} end)
+    {:ok, request_body, conn} = Plug.Conn.read_body(conn, length: 1_000_000)
+    request_data = %{url: _get_url_from_conn(conn), body: request_body, method: conn.method, headers: request_headers}
+    response_headers = Enum.map(stub_url.response_headers, fn header -> %{name: header.name, value: header.value} end)
+    response_data = %{status: stub_url.response_status, headers: response_headers, body: stub_url.response_body}
+    call_data = %{request: request_data, response: response_data, stub_url_id: stub_url.id}
+    changeset = StubUrlCall.changeset(%StubUrlCall{}, call_data)
+    Repo.insert!(changeset)
+  end
+
+  def _get_url_from_conn(conn) do
+    if(conn.query_string != nil and conn.query_string != "") do conn.request_path <> "?" <> conn.query_string else conn.request_path end
+  end
+
+  def show_calls(conn, %{"path_fragments" => path_fragments}) do
+    stub_url = get_stub_url!(path_fragments) |> Repo.preload(calls: from(c in StubUrlCall, order_by: [desc: c.inserted_at]))
+    render(conn, "calls.html", stub_url: stub_url)
   end
 
   def edit(conn, %{"path_fragments" => path_fragments}) do
