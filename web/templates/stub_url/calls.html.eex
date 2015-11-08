@@ -1,5 +1,5 @@
 <ol class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-<%= for call <- @stub_url.calls do %>
+<%= for {call, index} <- Enum.with_index(@stub_url.calls) do %>
   <li class="panel panel-default">
     <div class="panel-heading" role="tab" id="call-<%= call.id %>-heading">
       <h4 class="panel-title">
@@ -10,7 +10,7 @@
         </a>
       </h4>
     </div>
-    <div id="call-<%= call.id %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="call-<%= call.id %>-heading">
+    <div id="call-<%= call.id %>" class="panel-collapse collapse <%= if(index==0) do "in" end %>" role="tabpanel" aria-labelledby="call-<%= call.id %>-heading">
       <div class="panel-body">
 		  <ul class="nav nav-tabs" role="tablist">
 		    <li role="presentation" class="active">
