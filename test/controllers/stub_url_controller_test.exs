@@ -85,7 +85,7 @@ defmodule StubOnWeb.StubUrlControllerTest do
 
     conn = put conn, stub_url_path(conn, :update, stub_url), stub_url: @valid_attrs
 
-    assert redirected_to(conn) == stub_url_path(conn, :new, previous_path: @valid_attrs[:path])
+    assert redirected_to(conn) == stub_url_path(conn, :edit, ["hello_world"])
     assert Repo.get_by(StubUrl, @valid_attrs)
   end
 

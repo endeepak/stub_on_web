@@ -47,7 +47,6 @@ MIT License
 
 ## ToDo
 
-* Edit save to remain in edit
 * Limit the number of calls stored in system
 * 404 page to redirect to add new url
 * Template for adding xml, json response

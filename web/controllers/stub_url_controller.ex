@@ -77,7 +77,8 @@ defmodule StubOnWeb.StubUrlController do
     case Repo.update(changeset) do
       {:ok, stub_url} ->
         conn
-        |> redirect(to: stub_url_path(conn, :new, previous_path: stub_url.path))
+        |> put_flash(:success, 'Updated successfully')
+        |> redirect(to: stub_url_path(conn, :edit, StubUrl.path_fragments(stub_url)))
       {:error, changeset} ->
         conn 
         |> put_status(422)
