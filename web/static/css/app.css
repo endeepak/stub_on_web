@@ -60,6 +60,10 @@ li.response-header {
 	float: right;
 }
 
+.panel-body {
+	overflow: scroll;
+}
+
 .header-name {
 	min-width: 200px;
 }
