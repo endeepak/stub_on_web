@@ -52,6 +52,13 @@ defmodule StubOnWeb.StubUrlController do
     call_data = %{request: request_data, response: response_data, stub_url_id: stub_url.id}
     changeset = StubUrlCall.changeset(%StubUrlCall{}, call_data)
     Repo.insert!(changeset)
+
+    max_stub_url_calls = Application.get_env(:stub_on_web, :max_stub_url_calls)
+    older_calls = Repo.all from c in StubUrlCall,
+                         where: c.stub_url_id == ^stub_url.id,
+                         order_by: [desc: c.inserted_at],
+                         offset: ^max_stub_url_calls
+    Enum.each older_calls, &Repo.delete!(&1)
   end
 
   def _get_url_from_conn(conn) do
@@ -59,8 +66,10 @@ defmodule StubOnWeb.StubUrlController do
   end
 
   def show_calls(conn, %{"path_fragments" => path_fragments}) do
-    stub_url = get_stub_url!(path_fragments) |> Repo.preload(calls: from(c in StubUrlCall, order_by: [desc: c.inserted_at]))
-    render(conn, "calls.html", stub_url: stub_url)
+    max_stub_url_calls = Application.get_env(:stub_on_web, :max_stub_url_calls)
+    stub_url = get_stub_url!(path_fragments) 
+              |> Repo.preload(calls: from(c in StubUrlCall, limit: ^max_stub_url_calls, order_by: [desc: c.inserted_at]))
+    render(conn, "calls.html", stub_url: stub_url, max_stub_url_calls: max_stub_url_calls)
   end
 
   def edit(conn, %{"path_fragments" => path_fragments}) do

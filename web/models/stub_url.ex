@@ -59,8 +59,8 @@ defmodule StubOnWeb.StubUrlCall do
   @foreign_key_type :binary_id  
 
   schema "stub_url_calls" do
-    embeds_one :request, StubOnWeb.HttpRequest
-    embeds_one :response, StubOnWeb.HttpResponse
+    embeds_one :request, StubOnWeb.HttpRequest, on_replace: :delete
+    embeds_one :response, StubOnWeb.HttpResponse, on_replace: :delete
     belongs_to :stub_url, StubOnWeb.StubUrl
     timestamps
   end
