@@ -1,10 +1,12 @@
-<h6>Headers</h6>
-<table class="table">
-	<%= for header <- @headers do %>
-		<tr>
-			<td class="header-name"><%= humanize(header.name) %></td>
-			<td class="header-value"><%= header.value %></td>
-		</tr>
-	<%= end %>	
-</table>
+<%= if length(@headers) > 0 do %>
+	<h6>Headers</h6>
+	<table class="table">
+		<%= for header <- @headers do %>
+			<tr>
+				<td class="header-name"><%= humanize(header.name) %></td>
+				<td class="header-value"><%= header.value %></td>
+			</tr>
+		<%= end %>	
+	</table>
+<%= end %>	
 

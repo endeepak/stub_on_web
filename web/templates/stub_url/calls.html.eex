@@ -1,3 +1,7 @@
+<%= if length(@stub_url.calls) == 0 do %>
+	<h5>There are no calls for <a href="<%= get_stub_url_url(@conn, :show, @stub_url) %>"> <%= get_stub_url_url(@conn, :show, @stub_url) %> </a> yet</h5>
+<%= end %>
+
 <ol class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 <%= for {call, index} <- Enum.with_index(@stub_url.calls) do %>
   <li class="panel panel-default">
