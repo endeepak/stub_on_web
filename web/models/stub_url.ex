@@ -99,7 +99,7 @@ defmodule StubOnWeb.StubUrl do
   end
 
   def path_fragments(model) do
-    model.path 
-    |> String.split("/")
+    path = model.path || ""
+    String.split(path, "/")
   end
 end
