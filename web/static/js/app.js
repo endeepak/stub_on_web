@@ -38,4 +38,18 @@ $(function() {
 		var localDateString = moment($(this).data('time')).format('YYYY-MM-DD HH:mm:ss');
 		$(this).html(localDateString);
 	});
+
+	$('button[name="stub-url-action"]').on('click', function(){
+		$(this).closest('form').data('stub-url-action', $(this).val());
+	});
+
+	$('.stub-url-action-form').on('submit', function(e) {
+		e.preventDefault();
+		var stubUrl = $(this).find('input[type="text"]').val();
+		var action = $(this).data('stub-url-action') || $('button[name="stub-url-action"]:first').val();
+		var host = window.location.host;
+		var rawStuburlPath = stubUrl.replace(/(http|https):\/\//g, '').replace(host, '');
+		var stubUrlPath = rawStuburlPath.startsWith("/") ? rawStuburlPath.substring(1) : rawStuburlPath;
+		window.location = "/" + action + "/" + stubUrlPath;
+	});
 });

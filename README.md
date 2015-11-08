@@ -1,6 +1,6 @@
 # StubOnWeb [![Build Status](https://travis-ci.org/endeepak/stub_on_web.svg?branch=master)](https://travis-ci.org/endeepak/stub_on_web)
 
-Create urls with stubbed response for testing your API integration
+Create stub urls to test external API integration
 
 Try it : http://stubonweb.herokuapp.com
 
@@ -17,12 +17,6 @@ Try it : http://stubonweb.herokuapp.com
 * Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 * Ready to run in production? Please [check phoenix deployment guides](http://www.phoenixframework.org/docs/deployment).
-
-## TODO
-
-* Capture requests and response for each call and allow users to inspect this info
-* Search box to visit or edit url. Handle full url or path
-
 
 ## Contributing
 
@@ -50,3 +44,15 @@ Service providers [heroku](https://www.heroku.com/home) and [mongolabs](https://
 ## License
 
 MIT License
+
+## ToDo
+
+* Edit save to remain in edit
+* Limit the number of calls stored in system
+* 404 page to redirect to add new url
+* Template for adding xml, json response
+
+## Sins
+
+* Lot of code in controller
+* Low test coverage
