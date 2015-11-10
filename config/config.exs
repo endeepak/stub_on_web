@@ -19,8 +19,16 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Only recent max_stub_url_calls will be retained in system
 config :stub_on_web, :max_stub_url_calls, 20
+
+# Ignore request headers like the ones added by Heroku
+config :stub_on_web, :ignore_request_headers, 
+	  ["X-Forwarded-For", "X-Forwarded-Proto", "X-Forwarded-Port", "X-Request-Start", "X-Request-Id", "Via", "Connect-Time", "Total-Route-Time"]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
+
+
+

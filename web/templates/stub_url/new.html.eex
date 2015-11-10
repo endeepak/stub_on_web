@@ -1,7 +1,7 @@
 <%= render "_access_info.html", conn: @conn,
 							   stub_url: @previous_stub_url %>
 
-<h3>New url</h3>
+<h3>New URL</h3>
 
 <%= render "form.html", changeset: @changeset, conn: @conn,
 						action_label: "Create",

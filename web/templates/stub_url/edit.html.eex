@@ -1,4 +1,4 @@
-<h3>Edit url</h3>
+<h3>Edit URL</h3>
 
 <%= render "form.html", changeset: @changeset, conn: @conn,
 						action_label: "Update",

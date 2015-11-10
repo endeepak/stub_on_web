@@ -7,7 +7,7 @@
       <input name="stub_url[response_headers][$index][value]" class="form-control" required/>
     </div>
     <div class="col-md-2">
-      <a class="btn remove-trigger">Remove</a>
+      <a class="btn btn-danger btn-sm remove-trigger">&times;</a>
     </div>
   </li>
 </script>
@@ -42,7 +42,7 @@
 
   <div class="form-group">
     <label>Response Headers</label>
-    <a class="btn add-response-header">Add Header</a>    
+    <a class="btn btn-primary btn-sm add-response-header">+</a>    
   </div>
 
   <ul id="response-headers">
@@ -55,7 +55,7 @@
           <%= text_input h, :value, class: "form-control", required: "required" %>
         </div>
         <div class="col-md-2">
-          <a class="btn remove-trigger">Remove</a>
+          <a class="btn btn-danger btn-sm remove-trigger">&times;</a>
         </div>
       </li>
     <% end %>

@@ -1,13 +1,13 @@
 <%= if @stub_url do %>
 	<div class="alert alert-info" role="alert">
 		<p>
-			Access the url:  
+			Access URL:  
 			<a href="<%= get_stub_url_url(@conn, :show, @stub_url) %>">
 				<%= get_stub_url_url(@conn, :show, @stub_url) %>
 			</a> 
 		</p>
 		<p>
-		Edit the url: 
+		Edit URL: 
 			<a href="<%= get_stub_url_url(@conn, :edit, @stub_url) %>">
 				<%= get_stub_url_url(@conn, :edit, @stub_url) %>
 			</a> 
