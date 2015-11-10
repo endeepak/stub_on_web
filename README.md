@@ -2,7 +2,7 @@
 
 Create stub urls to test external API integration
 
-Try it : http://stubonweb.herokuapp.com
+Try it on http://stubonweb.herokuapp.com
 
 ## Running
 
@@ -31,11 +31,11 @@ If you can code, please fork the repo and raise a pull request
 
 ## Why yet another stub?
 
-The existing web solutions suffer from some of the problems listed below
+StubOnWeb is built to ease the manual testing of multiple scenarios of our service integration with other system's API. The existing web solutions suffer from one or more of the problems listed below
 
 * Doesn't allow to choose your own path for url so it is easy to remember
-* Doesn't allow to edit the response. Only way to test multiple scenarios is to create new url and update your app config and restart your services. Oh too much work!
-* Change requests take longer time
+* Doesn't allow to edit the response. Only way to test multiple scenarios is to create new url and update your app config and restart your services. Oh.. too much work!
+* Change requests for new features take longer time. Their tech stack was new and less fun for me to learn & contribute
 * Doesn't allow to inspect last few requests for the url
 * Over engineered UI / work-flow for the job
 
