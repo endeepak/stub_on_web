@@ -1,82 +1,7 @@
-defmodule StubOnWeb.HttpHeader do
-  use StubOnWeb.Web, :model
-
-  embedded_schema do
-    field :name, :string
-    field :value, :string
-  end
-
-  @required_fields ~w(name value)
-  @optional_fields ~w()
-
-  def changeset(model, params \\ :empty) do
-    model
-    |> cast(params, @required_fields, @optional_fields)
-  end
-end
-
-defmodule StubOnWeb.HttpRequest do
-  use StubOnWeb.Web, :model
-
-  embedded_schema do
-    field :method, :string
-    field :url, :string
-    field :body, :string
-    embeds_many :headers, StubOnWeb.HttpHeader, on_replace: :delete
-  end
-
-  @required_fields ~w(method url)
-  @optional_fields ~w(headers body)
-
-  def changeset(model, params \\ :empty) do
-    model
-    |> cast(params, @required_fields, @optional_fields)
-  end
-end
-
-defmodule StubOnWeb.HttpResponse do
-  use StubOnWeb.Web, :model
-
-  embedded_schema do
-    field :status, :integer
-    field :body, :string
-    embeds_many :headers, StubOnWeb.HttpHeader, on_replace: :delete
-  end
-
-  @required_fields ~w(status)
-  @optional_fields ~w(headers body)
-
-  def changeset(model, params \\ :empty) do
-    model
-    |> cast(params, @required_fields, @optional_fields)
-  end
-end
-
-defmodule StubOnWeb.StubUrlCall do
-  use StubOnWeb.Web, :model
-
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id  
-
-  schema "stub_url_calls" do
-    embeds_one :request, StubOnWeb.HttpRequest, on_replace: :delete
-    embeds_one :response, StubOnWeb.HttpResponse, on_replace: :delete
-    belongs_to :stub_url, StubOnWeb.StubUrl
-    timestamps
-  end
-
-  @required_fields ~w(request response stub_url_id)
-  @optional_fields ~w()
-
-  def changeset(model, params \\ :empty) do
-    model
-    |> cast(params, @required_fields, @optional_fields)
-  end
-end
-
 defmodule StubOnWeb.StubUrl do
   use StubOnWeb.Web, :model
 
+  alias StubOnWeb.StubUrl
   alias StubOnWeb.HttpHeader
   alias StubOnWeb.StubUrlCall
   alias StubOnWeb.Repo
@@ -104,15 +29,34 @@ defmodule StubOnWeb.StubUrl do
     |> unique_constraint(:path)
   end
 
+  def new_changeset(template) do
+    random_path = Ecto.UUID.generate |> String.split("-") |> List.last
+    default_attrs = %{path: random_path, response_status: 200} |> Map.merge(_get_attrs_for_template(template))
+    StubUrl.changeset(%StubUrl{}, default_attrs)
+  end
+
   def path_fragments(model) do
     path = model.path || ""
     String.split(path, "/")
+  end
+
+  def get_by_path_fragments!(path_fragments) do
+    path = path_fragments |> Enum.join("/")
+    Repo.one!(from s in StubUrl, where: s.path == ^path or s.path == ^(path <> "/"))
   end
 
   def notify_call(stub_url, conn) do
     _capture_call(stub_url, conn)
     min_delay = stub_url.min_delay || 0
     :timer.sleep(min_delay * @number_milliseconds_in_a_second)
+  end
+
+  def _get_attrs_for_template(template) do
+    stub_url_templates = Application.get_env(:stub_on_web, :stub_url_templates) || %{}
+    case template do
+      nil -> %{}
+      _ -> stub_url_templates[String.to_atom(template)] || %{response_body: "Couldn't find template : #{template}" }
+    end
   end
 
   def _capture_call(stub_url, conn) do

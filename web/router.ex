@@ -17,6 +17,8 @@ defmodule StubOnWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", StubUrlController, :new
+    get "/new", StubUrlController, :new
+    get "/new/:template", StubUrlController, :new
     resources "/stub_urls", StubUrlController, only: [:new, :create, :update]
     get "/edit/*path_fragments", StubUrlController, :edit
     get "/calls/*path_fragments", StubUrlController, :show_calls

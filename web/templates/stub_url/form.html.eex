@@ -1,13 +1,15 @@
 <script type="text/html" id="response-header-template">
-  <li class="form-group row response-header removable">
-    <div class="col-md-4">
-      <input name="stub_url[response_headers][$index][name]" class="form-control" required/>
-    </div>
-    <div class="col-md-6">
-      <input name="stub_url[response_headers][$index][value]" class="form-control" required/>
-    </div>
-    <div class="col-md-2">
-      <a class="btn btn-danger btn-sm remove-trigger">&times;</a>
+  <li class="form-group response-header removable">
+    <div class="row">
+      <div class="col-md-4">
+        <input name="stub_url[response_headers][$index][name]" class="form-control" required/>
+      </div>
+      <div class="col-md-7">
+        <input name="stub_url[response_headers][$index][value]" class="form-control" required/>
+      </div>
+      <div class="col-md-1">
+        <a class="btn btn-danger btn-sm remove-trigger">&times;</a>
+      </div>
     </div>
   </li>
 </script>
@@ -58,15 +60,17 @@
 
   <ul id="response-headers">
     <%= inputs_for f, :response_headers, fn h -> %>
-      <li class="form-group row response-header removable">
-        <div class="col-md-4">
-          <%= text_input h, :name, class: "form-control", required: "required" %>
-        </div>
-        <div class="col-md-6">
-          <%= text_input h, :value, class: "form-control", required: "required" %>
-        </div>
-        <div class="col-md-2">
-          <a class="btn btn-danger btn-sm remove-trigger">&times;</a>
+      <li class="form-group response-header removable">
+        <div class="row">
+          <div class="col-md-4">
+            <%= text_input h, :name, class: "form-control", required: "required" %>
+          </div>
+          <div class="col-md-7">
+            <%= text_input h, :value, class: "form-control", required: "required" %>
+          </div>
+          <div class="col-md-1">
+            <a class="btn btn-danger btn-sm remove-trigger">&times;</a>
+          </div>
         </div>
       </li>
     <% end %>

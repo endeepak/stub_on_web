@@ -26,6 +26,33 @@ config :stub_on_web, :max_stub_url_calls, 20
 config :stub_on_web, :ignore_request_headers, 
 	  ["X-Forwarded-For", "X-Forwarded-Proto", "X-Forwarded-Port", "X-Request-Start", "X-Request-Id", "Via", "Connect-Time", "Total-Route-Time"]
 
+json_body = """
+{
+  "data": 42
+}
+"""
+
+xml_body = """
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <value>42</value>
+</data>
+"""
+
+stub_url_templates = %{
+  json: %{
+    response_headers: [%{name: "Content-Type", value: "application/json"}],
+    response_body: json_body
+  },
+  xml: %{
+    response_headers: [%{name: "Content-Type", value: "application/xml"}],
+    response_body: xml_body
+  }
+}
+
+
+config :stub_on_web, :stub_url_templates, stub_url_templates
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

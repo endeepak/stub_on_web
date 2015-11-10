@@ -21,9 +21,20 @@
           <ul class="nav navbar-nav">
             <li><a href="<%= stub_url_url(@conn, :new) %>">Add New</a></li>
           </ul>
+          <form class="navbar-form navbar-left" role="create">
+            <div class="btn-group">
+              <a href="/new/json" class="btn btn-default">JSON</a>
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="/new/xml">XML</a></li>
+              </ul>
+            </div>
+          </form>
           <form class="navbar-form navbar-left stub-url-action-form" role="search">
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Stub URL or Path" required>
+              <input id="stub-url-search" type="text" class="form-control" placeholder="Stub URL or Path" required>
             </div>
             <button type="submit" name="stub-url-action" value="calls" class="btn btn-default">Show Calls</button>
             <button type="submit" name="stub-url-action" value="edit" class="btn btn-default">Edit</button>

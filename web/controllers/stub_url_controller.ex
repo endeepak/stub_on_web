@@ -7,9 +7,7 @@ defmodule StubOnWeb.StubUrlController do
   plug :scrub_params, "stub_url" when action in [:create, :update]
 
   def new(conn, params) do
-    random_path = Ecto.UUID.generate |> String.split("-") |> List.last
-    default_attrs = %{path: random_path, response_status: 200}
-    changeset = StubUrl.changeset(%StubUrl{}, default_attrs)
+    changeset = StubUrl.new_changeset(params["template"])
     previous_stub_url = if params["previous_path"], do: %StubUrl{path: params["previous_path"]}, else: nil
     render(conn, "new.html", changeset: changeset, previous_stub_url: previous_stub_url)
   end
@@ -28,13 +26,8 @@ defmodule StubOnWeb.StubUrlController do
     end
   end
 
-  def get_stub_url!(path_fragments) do
-    path = path_fragments |> Enum.join("/")
-    Repo.one!(from s in StubUrl, where: s.path == ^path or s.path == ^(path <> "/"))
-  end
-
   def show(conn, %{"path_fragments" => path_fragments}) do
-    stub_url = get_stub_url!(path_fragments)
+    stub_url = StubUrl.get_by_path_fragments!(path_fragments)
     response_headers = stub_url.response_headers || []
     conn = Enum.reduce(response_headers, conn, fn(header, conn) -> 
       put_resp_header(conn, String.downcase(header.name), header.value) 
@@ -45,13 +38,13 @@ defmodule StubOnWeb.StubUrlController do
 
   def show_calls(conn, %{"path_fragments" => path_fragments}) do
     max_stub_url_calls = Application.get_env(:stub_on_web, :max_stub_url_calls)
-    stub_url = get_stub_url!(path_fragments) 
+    stub_url = StubUrl.get_by_path_fragments!(path_fragments) 
               |> Repo.preload(calls: from(c in StubUrlCall, limit: ^max_stub_url_calls, order_by: [desc: c.inserted_at]))
     render(conn, "calls.html", stub_url: stub_url, max_stub_url_calls: max_stub_url_calls)
   end
 
   def edit(conn, %{"path_fragments" => path_fragments}) do
-    stub_url = get_stub_url!(path_fragments)
+    stub_url = StubUrl.get_by_path_fragments!(path_fragments)
     changeset = StubUrl.changeset(stub_url)
     render(conn, "edit.html", stub_url: stub_url, changeset: changeset)
   end
