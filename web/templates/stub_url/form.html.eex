@@ -35,10 +35,21 @@
     <% end %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :response_status, "Response status", class: "control-label" %>
-    <%= number_input f, :response_status, class: "form-control", required: "required" %>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <%= label f, :response_status, "Response status", class: "control-label" %>
+      <%= number_input f, :response_status, class: "form-control", required: "required" %>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= label f, :min_delay, "Minimum Delay", class: "control-label" %>
+      <div class="input-group">
+        <%= number_input f, :min_delay, class: "form-control"%>
+        <div class="input-group-addon">seconds</div>
+      </div>
+    </div>
   </div>
+
 
   <div class="form-group">
     <label>Response Headers</label>

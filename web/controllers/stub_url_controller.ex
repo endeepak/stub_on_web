@@ -39,39 +39,8 @@ defmodule StubOnWeb.StubUrlController do
     conn = Enum.reduce(response_headers, conn, fn(header, conn) -> 
       put_resp_header(conn, String.downcase(header.name), header.value) 
     end)
-    _capture_call(conn, stub_url)
+    StubUrl.notify_call(stub_url, conn)
     send_resp(conn, stub_url.response_status, stub_url.response_body || "")
-  end
-
-  def _capture_call(conn, stub_url) do
-    request_headers = _get_request_headers(conn)
-    request_body = conn.private[:raw_request_body]
-    request_data = %{url: _get_url_from_conn(conn), body: request_body, method: conn.method, headers: request_headers}
-    response_headers = Enum.map(stub_url.response_headers, fn header -> %{name: header.name, value: header.value} end)
-    response_data = %{status: stub_url.response_status, headers: response_headers, body: stub_url.response_body}
-    call_data = %{request: request_data, response: response_data, stub_url_id: stub_url.id}
-    changeset = StubUrlCall.changeset(%StubUrlCall{}, call_data)
-    Repo.insert!(changeset)
-
-    max_stub_url_calls = Application.get_env(:stub_on_web, :max_stub_url_calls)
-    #TODO: Optimize by getting nth recent and single delete for all calls older than that
-    older_calls = Repo.all from c in StubUrlCall,
-                         where: c.stub_url_id == ^stub_url.id,
-                         order_by: [desc: c.inserted_at],
-                         offset: ^max_stub_url_calls
-    Enum.each older_calls, &Repo.delete!(&1)
-  end
-
-  def _get_url_from_conn(conn) do
-    if(conn.query_string != nil and conn.query_string != "") do conn.request_path <> "?" <> conn.query_string else conn.request_path end
-  end
-
-  def _get_request_headers(conn) do
-    ignore_request_headers = Application.get_env(:stub_on_web, :ignore_request_headers)
-    normarlized_ignore_request_headers = ignore_request_headers |> Enum.map(&String.downcase(&1))
-    Enum.into(conn.req_headers, %{})
-    |> Map.drop(normarlized_ignore_request_headers)
-    |> Enum.map(fn {name, value} -> %{name: name, value: value} end)
   end
 
   def show_calls(conn, %{"path_fragments" => path_fragments}) do
