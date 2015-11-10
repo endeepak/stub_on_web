@@ -39,6 +39,15 @@ xml_body = """
 </data>
 """
 
+html_body = """
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Hello world!</h1>
+  </body>
+</html>
+"""
+
 stub_url_templates = %{
   json: %{
     response_headers: [%{name: "Content-Type", value: "application/json"}],
@@ -47,6 +56,10 @@ stub_url_templates = %{
   xml: %{
     response_headers: [%{name: "Content-Type", value: "application/xml"}],
     response_body: xml_body
+  },
+  html: %{
+    response_headers: [%{name: "Content-Type", value: "text/html"}],
+    response_body: html_body
   }
 }
 

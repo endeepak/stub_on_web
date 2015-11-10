@@ -29,6 +29,7 @@
               </button>
               <ul class="dropdown-menu">
                 <li><a href="/new/xml">XML</a></li>
+                <li><a href="/new/html">HTML</a></li>
               </ul>
             </div>
           </form>

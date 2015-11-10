@@ -78,7 +78,7 @@
 
   <div class="form-group">
     <%= label f, :response_body, "Response body", class: "control-label" %>
-    <%= textarea f, :response_body, class: "form-control", rows: 5 %>
+    <%= textarea f, :response_body, class: "form-control", rows: 6 %>
   </div>
 
   <div class="form-group">
