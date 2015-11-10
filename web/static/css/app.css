@@ -64,6 +64,10 @@ li.response-header {
 	overflow: scroll;
 }
 
+#stub-url-search {
+	width: 20em;
+}
+
 .header-name {
 	min-width: 200px;
 }

@@ -35,8 +35,9 @@ The existing web solutions suffer from some of the problems listed below
 
 * Doesn't allow to choose your own path for url so it is easy to remember
 * Doesn't allow to edit the response. Only way to test multiple scenarios is to create new url and update your app config and restart your services. Oh too much work!
-* Change requests take longer time 
-* Cluttered and Slow UI
+* Change requests take longer time
+* Doesn't allow to inspect last few requests for the url
+* Over engineered UI / work-flow for the job
 
 And I was learning [elixir](http://elixir-lang.org/). This was simple enough and fun to try out!
 
@@ -54,6 +55,7 @@ MIT License
 
 * Ability to add custom templates via config
 * 404 page to redirect to add new url
+* Responsive mobile friendly UI?
 
 ## Sins
 
