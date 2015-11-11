@@ -22,6 +22,9 @@ config :logger, :console,
 # Only recent max_stub_url_calls will be retained in system
 config :stub_on_web, :max_stub_url_calls, 20
 
+# Max allowed delay for stub response. Heroku has limit of 30 seconds
+config :stub_on_web, :max_allowed_delay, 20
+
 # Ignore request headers like the ones added by Heroku
 config :stub_on_web, :ignore_request_headers, 
 	  ["X-Forwarded-For", "X-Forwarded-Proto", "X-Forwarded-Port", "X-Request-Start", "X-Request-Id", "Via", "Connect-Time", "Total-Route-Time"]

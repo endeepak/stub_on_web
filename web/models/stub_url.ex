@@ -27,6 +27,7 @@ defmodule StubOnWeb.StubUrl do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> unique_constraint(:path)
+    |> validate_number(:min_delay, greater_than_or_equal_to: 0, less_than_or_equal_to: Application.get_env(:stub_on_web, :max_allowed_delay))
   end
 
   def new_changeset(template) do
