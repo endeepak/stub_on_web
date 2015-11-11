@@ -71,12 +71,16 @@ defmodule StubOnWeb.StubUrl do
     Repo.insert!(changeset)
 
     max_stub_url_calls = Application.get_env(:stub_on_web, :max_stub_url_calls)
-    #TODO: Optimize by getting nth recent and single delete for all calls older than that
-    older_calls = Repo.all from c in StubUrlCall,
+    oldest_call_time = Repo.one from c in StubUrlCall,
+                         select: max(c.inserted_at),
                          where: c.stub_url_id == ^stub_url.id,
                          order_by: [desc: c.inserted_at],
-                         offset: ^max_stub_url_calls
-    Enum.each older_calls, &Repo.delete!(&1)
+                         offset: ^max_stub_url_calls,
+                         limit: 1
+    if oldest_call_time do
+      Repo.delete_all from c in StubUrlCall,
+                     where: c.stub_url_id == ^stub_url.id and c.inserted_at < ^oldest_call_time
+    end                     
   end
 
   def _get_url_from_conn(conn) do
