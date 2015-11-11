@@ -61,7 +61,7 @@ defmodule StubOnWeb.StubUrl do
 
   def _capture_call(stub_url, conn) do
     request_headers = _get_request_headers(conn)
-    request_body = conn.private[:raw_request_body]
+    request_body = conn.private[:raw_body]
     request_data = %{url: _get_url_from_conn(conn), body: request_body, method: conn.method, headers: request_headers}
     response_headers = Enum.map(stub_url.response_headers, fn header -> %{name: header.name, value: header.value} end)
     response_data = %{status: stub_url.response_status, headers: response_headers, body: stub_url.response_body}

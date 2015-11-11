@@ -23,14 +23,13 @@ defmodule StubOnWeb.Endpoint do
   plug Plug.Logger
 
   defp copy_req_body(conn, _) do
-    {:ok, body, _} = Plug.Conn.read_body(conn, length: 1_000_000_000)
-    Plug.Conn.put_private(conn, :raw_request_body, body)
+    Plug.Conn.put_private(conn, :copy_raw_body, true)
   end
   
   plug :copy_req_body
 
   plug Plug.Parsers,
-    parsers: [:urlencoded, :multipart, :json],
+    parsers: [StubOnWeb.Parsers.URLENCODED, :multipart, StubOnWeb.Parsers.JSON],
     pass: ["*/*"],
     json_decoder: Poison
 
