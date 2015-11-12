@@ -52,4 +52,17 @@ $(function() {
 		var stubUrlPath = rawStuburlPath.startsWith("/") ? rawStuburlPath.substring(1) : rawStuburlPath;
 		window.location = "/" + action + "/" + stubUrlPath;
 	});
+
+	$('body').on('focus', '.response-header-name:not(.ui-autocomplete-input)', function () {
+    	$(this).autocomplete({        
+        	source: ["Access-Control-Allow-Origin", "Accept-Patch", "Accept-Ranges", "Age", "Allow", 
+					"Cache-Control", "Connection", "Content-Disposition", "Content-Encoding", "Content-Language",
+					"Content-Length", "Content-Location", "Content-MD5", "Content-Range", "Content-Type", "Date",
+					"ETag", "Expires", "Last-Modified", "Link", "Location", "P3P", "Pragma", "Proxy-Authenticate",
+					"Public-Key-Pins", "Refresh", "Retry-After", "Server", "Set-Cookie", "Status","Strict-Transport-Security",
+					"Trailer", "Transfer-Encoding", "Upgrade", "Vary", "Via", "Warning", "WWW-Authenticate", 
+					"X-Frame-Options", "X-XSS-Protection", "Content-Security-Policy", "X-Content-Security-Policy",
+					"X-WebKit-CSP", "X-Content-Type-Options", "X-Powered-By", "X-UA-Compatible", "X-Content-Duration"]
+		});
+	});
 });
