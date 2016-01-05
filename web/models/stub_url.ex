@@ -72,7 +72,7 @@ defmodule StubOnWeb.StubUrl do
 
     max_stub_url_calls = Application.get_env(:stub_on_web, :max_stub_url_calls)
     oldest_call_time = Repo.one from c in StubUrlCall,
-                         select: max(c.inserted_at),
+                         select: c.inserted_at,
                          where: c.stub_url_id == ^stub_url.id,
                          order_by: [desc: c.inserted_at],
                          offset: ^max_stub_url_calls,
